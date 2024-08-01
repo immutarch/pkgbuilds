@@ -1,0 +1,25 @@
+# Maintainer: Your Name <your.email@example.com>
+pkgname=kcm_imaupdate
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="A KDE System Settings module for managing system updates on Immutarch"
+arch=('x86_64')
+url="https://github.com/immutarch"
+license=('gpl-2.0-or-later')
+depends=('qt6-base' 'qt6-declarative' 'qt6-quickcontrols2' 'kcmutils' 'kconfig' 'kcoreaddons' 'ki18n')
+makedepends=('cmake' 'extra-cmake-modules')
+source=("https://github.com/immutarch/kcm_imaupdate/archive/refs/tags/${pkgver}.zip")
+sha256sums=('SKIP') # Replace with the actual SHA256 sum of your source tarball
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  cmake -B build -S . \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release
+  cmake --build build
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}/build"
+  make DESTDIR="${pkgdir}" install
+}
